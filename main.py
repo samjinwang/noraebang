@@ -43,107 +43,18 @@
 
 
 
-#Try with pyqt
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
-import sys
-from appSettings import *
-import pyaudio
-import numpy as np
-
-def rec():
-    CHUNK = 2 ** 11
-    RATE = 44100
-
-    p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True,
-                    frames_per_buffer=CHUNK)
-
-    for i in range(int(10 * 44100 / 1024)):  # go for a few seconds
-        data = np.fromstring(stream.read(CHUNK), dtype=np.int16)
-        peak = np.average(np.abs(data)) * 2
-        bars = "#" * int(50 * peak / 2 ** 16)
-        print("%04d %05d %s" % (i, peak, bars)) #Print the pitch of background sound
-
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-
-if __name__ == '__main__':
-
-
-    app = QApplication(sys.argv)
-    app_window = App_Window()
-    web = QWebEngineView()
-    web.settings().setAttribute(QWebEngineSettings.FullScreenSupportEnabled, True)
-    web.page().fullScreenRequested.connect(lambda request: request.accept())
-    baseUrl = "local"
-
-
-    htmlString = """
-                <iframe width="480" height="315" src="https://www.youtube.com/embed/p1ChpMOD0u0" frameborder="0" allowfullscreen></iframe>
-                 """
-
-    # htmlString = """
-    #         <iframe width="560" height="315" src="https://www.youtube.com/embed/kKmG_rl1qZE" frameborder="0" allowfullscreen></iframe>
-    #          """
-    web.setHtml(htmlString, QUrl(baseUrl))
-
-    button = QtWidgets.QPushButton(web)
-    button.setText("pitch setting")
-    button.setGeometry(50,350,150,100)
-    button.clicked.connect(rec)
-
-    web.show()
-    sys.exit(app.exec_())
-
-
-
-# #Try with tkinter
-# import tkinter
-# import pygame
-# import sounddevice  # pip install sounddevice
+# #Try with pyqt
+# from PyQt5 import QtWidgets
+# from PyQt5.QtWidgets import *
+# from PyQt5.QtGui import *
+# from PyQt5.QtCore import *
+# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+# import sys
+# from appSettings import *
 # import pyaudio
 # import numpy as np
 #
-# def play():
-#     pygame.init()
-#     pygame.mixer.init()
-#     pygame.mixer.music.load('aroha.wav')
-#     pygame.mixer.music.play()
-#     # data, fs = sf.read('aroha.wav')
-#     # sd.play(data, fs)
-#     # sd.wait()
-#
 # def rec():
-#     CHUNK = 2 ** 11
-#     RATE = 44100
-#
-#     p = pyaudio.PyAudio()
-#     # stream = p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True,
-#     #                 frames_per_buffer=CHUNK)
-#     stream = p.open(format=pyaudio.paInt16, channels=1, rate=RATE, input=True,
-#                     frames_per_buffer=CHUNK)
-#
-#     # data = np.fromstring(stream.read(CHUNK), dtype=np.int16)
-#     # print(type(data))
-#     # peak = np.average(np.abs(data)) * 2
-#     # print(type(np.abs(data)))
-#     # print(type(peak))
-#     # print("%05d %s" % (peak))
-#     for i in range(20):  # go for a few seconds
-#         data = np.fromstring(stream.read(CHUNK), dtype=np.int16)
-#         peak = np.average(np.abs(data)) * 2
-#         bars = "#" * int(50 * peak / 2 ** 16)
-#         print("%04d %05d %s" % (i, peak, bars))
-#
-#     stream.stop_stream()
-#     stream.close()
-#     p.terminate()
-#
 #     CHUNK = 2 ** 11
 #     RATE = 44100
 #
@@ -161,41 +72,66 @@ if __name__ == '__main__':
 #     stream.close()
 #     p.terminate()
 #
-# window = tkinter.Tk()
+# if __name__ == '__main__':
 #
-# button1 = tkinter.Button(text='play')
-# button1.config(command= play)
-# button2 = tkinter.Button(text='rec')
+#
+#     app = QApplication(sys.argv)
+#     app_window = App_Window()
+#     web = QWebEngineView()
+#     web.settings().setAttribute(QWebEngineSettings.FullScreenSupportEnabled, True)
+#     web.page().fullScreenRequested.connect(lambda request: request.accept())
+#     baseUrl = "local"
+#
+#
+#     htmlString = """
+#                 <iframe width="480" height="315" src="https://www.youtube.com/embed/p1ChpMOD0u0" frameborder="0" allowfullscreen></iframe>
+#                  """
+#
+#     # htmlString = """
+#     #         <iframe width="560" height="315" src="https://www.youtube.com/embed/kKmG_rl1qZE" frameborder="0" allowfullscreen></iframe>
+#     #          """
+#     web.setHtml(htmlString, QUrl(baseUrl))
+#
+#     button = QtWidgets.QPushButton(web)
+#     button.setText("pitch setting")
+#     button.setGeometry(50,350,150,100)
+#     button.clicked.connect(rec)
+#
+#     web.show()
+#     sys.exit(app.exec_())
+
+
+
+#Try with tkinter
+import tkinter
+import pygame
+import sounddevice  # pip install sounddevice
+import pyaudio
+import numpy as np
+import time
+
+def play():
+    pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load('aroha.wav')
+    pygame.mixer.music.play()
+    # data, fs = sf.read('aroha.wav')
+    # sd.play(data, fs)
+    # sd.wait()
+
+
+window = tkinter.Tk()
+
+button1 = tkinter.Button(text='play')
+button1.config(command= play)
+button2 = tkinter.Button(text='rec')
 # button2.config(command= rec)
-# button1.pack()
-# button2.pack()
-#
-# window.mainloop()
+button1.pack()
+button2.pack()
 
+window.mainloop()
 
-# Pitch Change
-# import os
-# import pyaudio
-# from pydub import AudioSegment
-# from pydub.playback import play
-#
-# cwd = os.getcwd()
-#
-# wavepath = cwd+"\\aroha.mp4"
-#
-# sound = AudioSegment.from_file(wavepath,"mp4")
-
-# play(sound)
-# print(sound.frame_rate)
-
-# shift the pitch down by half an octave (speed will decrease proportionally)
-# octaves = -0.5
-# print(sound.__len__())
-# print(sound.frame_rate)
-# new_sample_rate = int(sound.frame_rate * (2.0 ** octaves))
-#
-# lowpitch_sound = sound._spawn(sound.raw_data, overrides={'frame_rate': new_sample_rate})
-
-#Play pitch changed sound
-# play(lowpitch_sound)
-
+for i in range (1, 10):
+    time.sleep(3)
+    print("l")
+    window.update()
